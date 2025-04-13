@@ -75,8 +75,8 @@ def return_book():
 @app.route('/books', methods=['GET', 'POST'])
 def handle_books():
     if request.method == 'GET':
-        books = Book.query.all()
-        return jsonify([{'id': b.id, 'title': b.title, 'author': b.author, 'available': b.available} for b in books])
+        books=Book.query.all()
+        return render_template('books.html', books=books)
     elif request.method == 'POST':
         data = request.get_json()
         new_book = Book(title=data['title'], author=data['author'], available=data.get('available', True))
