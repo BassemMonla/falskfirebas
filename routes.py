@@ -1,11 +1,11 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from models import db, Client, Book
 
 app = Blueprint('routes', __name__)
 
 @app.route('/')
 def index():
-    return "Library API is running.  See /clients and /books for data."
+    return render_template('index.html')
 
 
 # Clients
@@ -13,7 +13,7 @@ def index():
 def handle_clients():
     if request.method == 'GET':
         clients = Client.query.all()
-        return jsonify([{'id': c.id, 'name': c.name} for c in clients]) 
+        return render_template('clients.html', clients=clients)
     elif request.method == 'POST':
         data = request.get_json()
         new_client = Client(name=data['name'])
@@ -95,3 +95,4 @@ def handle_book(id):
             db.session.commit()
             return '', 204
     return '', 404
+    
